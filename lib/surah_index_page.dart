@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nour_alislam/png_viewer_page.dart';
 import 'package:qcf_quran/qcf_quran.dart';
+
+import 'BookFunctionsClass.dart';
 
 class SurahIndexPage extends StatelessWidget {
   const SurahIndexPage({super.key});
@@ -64,7 +67,28 @@ appBar:         AppBar(
               trailing: const Icon(Icons.chevron_right
 
               ),
-              onTap: () => Navigator.pop(context, surahNum),
+              onTap:(){
+                print(surahNum);
+                //print("Tapped on verse $surah:$verse");
+                int bookNum=1;
+                int pageNum=1;
+                (bookNumber: bookNum,pageNumber: pageNum)=BookFunctionsClass.findBookPageFromSurahVerse(surah: surahNum,verse: 1);
+                print(bookNum);
+                print(pageNum);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PngViewerPage(
+                      bookNumber: bookNum,
+                      pageNumber: pageNum,
+                    ),
+                  ),
+                );
+              }
+
+
+
+                 // () => Navigator.pop(context, surahNum),
             ),
           );
         },

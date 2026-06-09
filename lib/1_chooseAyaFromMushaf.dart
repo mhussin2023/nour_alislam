@@ -29,15 +29,7 @@ class _QuranHomePageState extends State<QuranHomePage> {
         h: 1.h,
         textColor: Colors.black,
         onTap: (surah, verse) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => BookViewPage(
-          //       initialBookNumber: surah,
-          //       initialPageNumber: verse,
-          //     ),
-          //   ),
-          // );
+
 
           print("Tapped on verse $surah:$verse");
           int bookNum=1;
