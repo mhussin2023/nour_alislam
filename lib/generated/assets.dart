@@ -6,6 +6,12 @@ class Assets {
   Assets._();
 
   static const AssetGenImage exit = AssetGenImage('assets/icons/exit.png');
+  static const AssetGenImage leftArrow = AssetGenImage(
+    'assets/icons/left_arrow.png',
+  );
+  static const AssetGenImage rightArrow = AssetGenImage(
+    'assets/icons/right_arrow.png',
+  );
 }
 
 class AssetGenImage {

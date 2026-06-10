@@ -19,14 +19,17 @@ class _QuranHomePageState extends State<QuranHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
-
+      leading: IconButton(
+        icon: Image.asset('assets/icons/exit.png', width: 24, height: 24),
+        onPressed: () => Navigator.pop(context),
+      ),
     ),
       body: PageviewQuran(
         initialPageNumber: widget.initialPageNumber ?? 5,
         theme: QcfThemeData(),
-        sp: 0.9.sp,
+        sp: 1.sp,
         ///h for responsiveness
-        h: 1.h,
+        h: 0.9.h,
         textColor: Colors.black,
         onTap: (surah, verse) {
 

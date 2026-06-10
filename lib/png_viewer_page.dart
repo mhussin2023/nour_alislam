@@ -112,11 +112,15 @@ class _PngViewerPageState extends State<PngViewerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-       // title: Text(_fileName),
+        // title: Text(_fileName),
+        leading: IconButton(
+          icon: Image.asset('assets/icons/exit.png', width: 24, height: 24),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
 
           IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: Image.asset('assets/icons/left_arrow.png', width: 36, height: 36),
             onPressed: () {
               setState(() {
                 _currentPageNumber++;
@@ -126,7 +130,7 @@ class _PngViewerPageState extends State<PngViewerPage> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.arrow_forward),
+          icon: Image.asset('assets/icons/right_arrow.png', width: 36, height: 36),
             onPressed: _currentPageNumber > 1
                 ? () {
               setState(() {

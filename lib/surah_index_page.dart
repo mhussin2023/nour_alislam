@@ -13,12 +13,16 @@ class SurahIndexPage extends StatelessWidget {
 
     return Scaffold(
 
-appBar:         AppBar(
+        appBar: AppBar(
           // Ensures the title isn't forced to center on iOS
-         centerTitle: false,
+          centerTitle: false,
           title: const Align(
-           alignment: Alignment.centerRight,
+            alignment: Alignment.centerRight,
             child: Text('اختيار السورة'),
+          ),
+          leading: IconButton(
+            icon: Image.asset('assets/icons/exit.png', width: 24, height: 24),
+            onPressed: () => Navigator.pop(context),
           ),
         ),
 

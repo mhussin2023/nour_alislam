@@ -30,7 +30,13 @@ class _PartAndPageSelectorState extends State<PartAndPageSelector> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('تحديد الجزء والصفحة')),
+      appBar: AppBar(
+        title: const Text('تحديد الجزء والصفحة'),
+        leading: IconButton(
+          icon: Image.asset('assets/icons/exit.png', width: 24, height: 24),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
