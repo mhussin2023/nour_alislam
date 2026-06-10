@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nour_alislam/partAndPageSelector.dart';
 import 'package:nour_alislam/png_viewer_page.dart';
 import 'package:nour_alislam/surah_index_page.dart';
+import 'package:qcf_quran/qcf_quran.dart';
 import '1_chooseAyaFromMushaf.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StartUpPage extends StatefulWidget {
   const StartUpPage({super.key});
@@ -26,14 +29,24 @@ class _StartUpPageState extends State<StartUpPage> {
     if (text.isEmpty) return;
     final page = int.tryParse(text);
     if (page == null || page < 1 || page > 604) return;
+
     print('reached route');
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PngViewerPage(
-          bookNumber: 1,
-          pageNumber: page,
-        ),
+        builder: (context) =>
+            ScreenUtilInit(
+              designSize: const Size(392.72727272727275, 800.7272727272727),
+              minTextAdapt: true,
+              builder: (context, child) {
+                return   QuranHomePage();
+
+              },
+            )
+        //     PngViewerPage(
+        //   bookNumber: 1,
+        //   pageNumber: page,
+        // ),
       ),
     );
   }
@@ -43,6 +56,7 @@ class _StartUpPageState extends State<StartUpPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         title: Center(
             child: const Text(
@@ -52,14 +66,11 @@ class _StartUpPageState extends State<StartUpPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // const Spacer(flex: 1),
-              // Icon(Icons.menu_book_rounded, size: 72, color: theme.colorScheme.primary),
-              // const SizedBox(height: 12),
+              const SizedBox(height: 24),
               Text(
                 'اختر طريقة للبحث عن الآية',
                 style: theme.textTheme.headlineSmall?.copyWith(
@@ -74,8 +85,7 @@ class _StartUpPageState extends State<StartUpPage> {
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-             // const Spacer(flex: 2),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Directionality(
                 textDirection: TextDirection.rtl,
                 child: _MenuButton(
@@ -109,7 +119,6 @@ class _StartUpPageState extends State<StartUpPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
               Directionality(
                 textDirection: TextDirection.rtl,
                 child: _MenuButton(
@@ -126,7 +135,6 @@ class _StartUpPageState extends State<StartUpPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
               Directionality(
                 textDirection: TextDirection.rtl,
                 child: _MenuButton(
@@ -139,7 +147,6 @@ class _StartUpPageState extends State<StartUpPage> {
                         builder: (context) => const PartAndPageSelector(),
                       ),
                     );
-
                   },
                 ),
               ),
@@ -153,7 +160,7 @@ class _StartUpPageState extends State<StartUpPage> {
                 onTap: () {},
               )
               ),
-              const Spacer(flex: 1),
+              const SizedBox(height: 24),
             ],
           ),
         ),
