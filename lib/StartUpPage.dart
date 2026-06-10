@@ -1,10 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:nour_alislam/partAndPageSelector.dart';
+import 'package:nour_alislam/png_viewer_page.dart';
 import 'package:nour_alislam/surah_index_page.dart';
 import '1_chooseAyaFromMushaf.dart';
 
-class StartUpPage extends StatelessWidget {
+class StartUpPage extends StatefulWidget {
   const StartUpPage({super.key});
+
+  @override
+  State<StartUpPage> createState() => _StartUpPageState();
+}
+
+class _StartUpPageState extends State<StartUpPage> {
+  bool _showPageInput = false;
+  final _pageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageSubmit() {
+    final text = _pageController.text.trim();
+    if (text.isEmpty) return;
+    final page = int.tryParse(text);
+    if (page == null || page < 1 || page > 604) return;
+    print('reached route');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PngViewerPage(
+          bookNumber: 1,
+          pageNumber: page,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +53,13 @@ class StartUpPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Spacer(flex: 1),
-              Icon(Icons.menu_book_rounded, size: 72, color: theme.colorScheme.primary),
-              const SizedBox(height: 12),
+              // const Spacer(flex: 1),
+              // Icon(Icons.menu_book_rounded, size: 72, color: theme.colorScheme.primary),
+              // const SizedBox(height: 12),
               Text(
                 'اختر طريقة للبحث عن الآية',
                 style: theme.textTheme.headlineSmall?.copyWith(
@@ -41,51 +74,84 @@ class StartUpPage extends StatelessWidget {
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              const Spacer(flex: 2),
-              _MenuButton(
-                icon: Icons.auto_stories,
-                label: 'اختيار آية من المصحف',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const QuranHomePage(),
-                    ),
-                  );
-                },
+             // const Spacer(flex: 2),
+              const SizedBox(height: 16),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: _MenuButton(
+                  icon: Icons.auto_stories,
+                  label: 'اختيار رقم صفحة من مصحف المدينة',
+                  onTap: () {
+                    setState(() {
+                      _showPageInput = !_showPageInput;
+                    });
+                  },
+                  additionalContent: _showPageInput
+                      ? TextField(
+                          controller: _pageController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'أدخل رقم الصفحة (1-604)',
+                            hintStyle: const TextStyle(fontSize: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            isDense: true,
+                            filled: true,
+                            fillColor: theme.colorScheme.surface,
+                          ),
+                          style: const TextStyle(fontSize: 16),
+                          onSubmitted: (_) => _onPageSubmit(),
+                        )
+                      : null,
+                ),
               ),
               const SizedBox(height: 16),
-              _MenuButton(
-                icon: Icons.sort_by_alpha,
-                label: 'اختيار سورة ',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SurahIndexPage(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              _MenuButton(
-                icon: Icons.numbers,
-                label: 'اختيار رقم صفحة من الكتاب',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PartAndPageSelector(),
-                    ),
-                  );
 
-                },
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: _MenuButton(
+                  icon: Icons.sort_by_alpha,
+                  label: 'اختيار السورة والآية ',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SurahIndexPage(),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 16),
+
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: _MenuButton(
+                  icon: Icons.numbers,
+                  label: 'اختيار رقم صفحة من الكتاب',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PartAndPageSelector(),
+                      ),
+                    );
+
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              Directionality(
+                textDirection: TextDirection.rtl,
+              child:
               _MenuButton(
                 icon: Icons.search,
                 label: 'البحث بجزء من آية',
                 onTap: () {},
+              )
               ),
               const Spacer(flex: 1),
             ],
@@ -100,11 +166,13 @@ class _MenuButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final Widget? additionalContent;
 
   const _MenuButton({
     required this.icon,
     required this.label,
     required this.onTap,
+    this.additionalContent,
   });
 
   @override
@@ -121,24 +189,33 @@ class _MenuButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-            child: Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, color: theme.colorScheme.onPrimaryContainer, size: 28),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    label,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w600,
+                Row(
+                  children: [
+                    Icon(icon, color: theme.colorScheme.onPrimaryContainer, size: 28),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                  ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: theme.colorScheme.onPrimaryContainer,
+                      size: 18,
+                    ),
+                  ],
                 ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: theme.colorScheme.onPrimaryContainer,
-                  size: 18,
-                ),
+                if (additionalContent != null) ...[
+                  const SizedBox(height: 12),
+                  additionalContent!,
+                ],
               ],
             ),
           ),
