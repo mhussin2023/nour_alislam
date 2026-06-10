@@ -61,7 +61,7 @@ class _PartAndPageSelectorState extends State<PartAndPageSelector> {
                 if (selectedPart != null && _pageController.text.isNotEmpty) {
                   final int partNumber = partChoices.indexOf(selectedPart!) + 1;
                   final int? pageInput = int.tryParse(_pageController.text);
-                  if (pageInput != null) {
+                  if (pageInput != null && pageInput <= booksLimit[partNumber - 1] ) {
                     final int pageNumber = pageInput + 5;
                     Navigator.push(
                       context,
