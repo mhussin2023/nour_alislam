@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nour_alislam/png_viewer_page.dart';
+
+import 'data_Files/Book_final.dart';
 
 class PartAndPageSelector extends StatefulWidget {
   const PartAndPageSelector({super.key});
@@ -15,11 +18,14 @@ class _PartAndPageSelectorState extends State<PartAndPageSelector> {
     'الجزء الرابع',
   ];
 
-
-  final List<String> pageChoices = List.generate(100, (index) => (index + 1).toString());
-
+  final TextEditingController _pageController = TextEditingController();
   String? selectedPart;
-  String? selectedPage;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,17 +47,36 @@ class _PartAndPageSelectorState extends State<PartAndPageSelector> {
               onChanged: (val) => setState(() => selectedPart = val),
             ),
             const SizedBox(height: 16),
-            DropdownButtonFormField<String>(
-              value: selectedPage,
+            TextFormField(
+              controller: _pageController,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'رقم الصفحة',
                 border: OutlineInputBorder(),
               ),
-              items: pageChoices.map((page) {
-                return DropdownMenuItem(value: page, child: Text(page));
-              }).toList(),
-              onChanged: (val) => setState(() => selectedPage = val),
             ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                if (selectedPart != null && _pageController.text.isNotEmpty) {
+                  final int partNumber = partChoices.indexOf(selectedPart!) + 1;
+                  final int? pageInput = int.tryParse(_pageController.text);
+                  if (pageInput != null) {
+                    final int pageNumber = pageInput + 5;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PngViewerPage(
+                          bookNumber: partNumber,
+                          pageNumber: pageNumber,
+                        ),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text("افتح الصفحة"),
+            )
           ],
         ),
       ),

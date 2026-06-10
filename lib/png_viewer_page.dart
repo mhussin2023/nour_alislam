@@ -25,24 +25,38 @@ class _PngViewerPageState extends State<PngViewerPage> {
   String? _error;
   late String _fileName;
   late String _googleDriveLink;
+  late int _currentPageNumber;
 
   @override
   void initState() {
     super.initState();
-    _fileName = 'book_${widget.bookNumber}_page_${widget.pageNumber}.png';
-    //_googleDriveLink =
-    //    'https://drive.google.com/file/d/BOOK${widget.bookNumber}_PAGE${widget.pageNumber}/view';
-    var found=Book_files_links.firstWhere((element) {
-      return int.parse(element[0].toString())==widget.pageNumber &&
-          int.parse(element[3].toString())==widget.bookNumber;
-    });
-    _googleDriveLink=found[2].toString();
-
-
+    _currentPageNumber = widget.pageNumber;
+    _updatePageInfo();
     _loadImage();
   }
 
+  void _updatePageInfo() {
+    _fileName = 'book_${widget.bookNumber}_page_$_currentPageNumber.png';
+    var found = Book_files_links.firstWhere(
+      (element) =>
+          int.parse(element[0].toString()) == _currentPageNumber &&
+          int.parse(element[3].toString()) == widget.bookNumber,
+      orElse: () => [],
+    );
+
+    if (found.isNotEmpty) {
+      _googleDriveLink = found[2].toString();
+      _error = null;
+    } else {
+      _googleDriveLink = '';
+      _error = 'Page $_currentPageNumber not found';
+    }
+  }
+
   Future<void> _loadImage() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final dir = await getApplicationDocumentsDirectory();
       final localFile = File('${dir.path}/$_fileName');
@@ -97,14 +111,51 @@ class _PngViewerPageState extends State<PngViewerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_fileName)),
+      appBar: AppBar(
+       // title: Text(_fileName),
+        actions: [
+
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              setState(() {
+                _currentPageNumber++;
+                _updatePageInfo();
+              });
+              _loadImage();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: _currentPageNumber > 1
+                ? () {
+              setState(() {
+                _currentPageNumber--;
+                _updatePageInfo();
+              });
+              _loadImage();
+            }
+                : null,
+          ),
+        ],
+      ),
       body: Center(
         child: _isLoading
             ? const CircularProgressIndicator()
             : _error != null
                 ? Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text('Error: $_error', textAlign: TextAlign.center),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Error: $_error', textAlign: TextAlign.center),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _loadImage,
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
                   )
                 : InteractiveViewer(
                     child: Image.file(_imageFile!, fit: BoxFit.contain),

@@ -1,3 +1,5 @@
+List<int> booksLimit=[814,819,802,765];
+
 // aya number,0
 // bookPageNumber,1
 // pdfPageNumber,2
