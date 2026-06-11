@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nour_alislam/partAndPageSelector.dart';
 import 'package:nour_alislam/png_viewer_page.dart';
+import 'package:nour_alislam/searchByAyaPart.dart';
 import 'package:nour_alislam/surah_index_page.dart';
 import 'package:qcf_quran/qcf_quran.dart';
 import '1_chooseAyaFromMushaf.dart';
@@ -24,6 +26,13 @@ class _StartUpPageState extends State<StartUpPage> {
     super.dispose();
   }
 
+  void _exitApp() {
+    imageCache.clear();
+    imageCache.clearLiveImages();
+    WidgetsBinding.instance.performReassemble();
+    SystemNavigator.pop();
+  }
+
   void _onPageSubmit() {
     final text = _pageController.text.trim();
     if (text.isEmpty) return;
@@ -39,7 +48,9 @@ class _StartUpPageState extends State<StartUpPage> {
               designSize: const Size(392.72727272727275, 800.7272727272727),
               minTextAdapt: true,
               builder: (context, child) {
-                return   QuranHomePage();
+                return   QuranHomePage(
+                  initialPageNumber: page,
+                );
 
               },
             )
@@ -157,8 +168,25 @@ class _StartUpPageState extends State<StartUpPage> {
               _MenuButton(
                 icon: Icons.search,
                 label: 'البحث بجزء من آية',
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchByAyaPart(),
+                    ),
+                  );
+                },
               )
+              ),
+              const SizedBox(height: 24),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: _MenuButton(
+                  color: Colors.red[200],
+                  icon: Icons.power_settings_new,
+                  label: 'خروج',
+                  onTap: _exitApp,
+                ),
               ),
               const SizedBox(height: 24),
             ],
@@ -174,12 +202,14 @@ class _MenuButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
   final Widget? additionalContent;
+  final Color? color;
 
   const _MenuButton({
     required this.icon,
     required this.label,
     required this.onTap,
     this.additionalContent,
+    this.color,
   });
 
   @override
@@ -189,7 +219,7 @@ class _MenuButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Material(
-        color: theme.colorScheme.primaryContainer,
+        color: color ?? theme.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onTap: onTap,

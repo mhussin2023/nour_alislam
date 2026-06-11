@@ -1,6 +1,5 @@
 import "data_Files/Book_final.dart";
-import 'data_Files/book_files_links.dart';
-import 'package:qcf_quran/qcf_quran.dart' as Quran;
+
 
 class BookFunctionsClass {
 
