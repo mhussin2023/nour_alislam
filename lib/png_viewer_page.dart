@@ -129,6 +129,7 @@ class _PngViewerPageState extends State<PngViewerPage> {
               _loadImage();
             },
           ),
+          SizedBox(width: 40),
           IconButton(
           icon: Image.asset('assets/icons/right_arrow.png', width: 36, height: 36),
             onPressed: _currentPageNumber > 1
@@ -141,6 +142,7 @@ class _PngViewerPageState extends State<PngViewerPage> {
             }
                 : null,
           ),
+          SizedBox(width: 30),
         ],
       ),
       body: Center(
