@@ -9,6 +9,9 @@ class Assets {
   static const AssetGenImage leftArrow = AssetGenImage(
     'assets/icons/left_arrow.png',
   );
+  static const AssetGenImage nourIslam = AssetGenImage(
+    'assets/icons/nour_islam.png',
+  );
   static const AssetGenImage rightArrow = AssetGenImage(
     'assets/icons/right_arrow.png',
   );

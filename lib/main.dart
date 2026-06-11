@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qcf_quran/qcf_quran.dart';
 
 import 'StartUpPage.dart';
+//privacy policy page
+// https://www.termsfeed.com/live/2cd9718d-11e2-46c1-a031-f5e633baa924
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

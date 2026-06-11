@@ -38,10 +38,24 @@ dependencies:
   qcf_quran: ^0.0.5
   flutter_screenutil: ^5.9.3
   path_provider: ^2.0.0
+  package_rename: ^1.10.1
+  url_launcher: ^6.3.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/icons/nour_islam.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+package_rename_config:
+  android:
+    app_name: "نور الإسلام"
+    package_name: "com.nadanewsoft.nour_alislam"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,6 +80,7 @@ flutter:
     - assets/icons/exit.png
     - assets/icons/right_arrow.png
     - assets/icons/left_arrow.png
+    - assets/icons/nour_islam.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

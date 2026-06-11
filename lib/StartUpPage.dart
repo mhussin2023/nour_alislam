@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nour_alislam/partAndPageSelector.dart';
-import 'package:nour_alislam/png_viewer_page.dart';
 import 'package:nour_alislam/searchByAyaPart.dart';
 import 'package:nour_alislam/surah_index_page.dart';
-import 'package:qcf_quran/qcf_quran.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '1_chooseAyaFromMushaf.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StartUpPage extends StatefulWidget {
   const StartUpPage({super.key});
@@ -83,17 +81,10 @@ class _StartUpPageState extends State<StartUpPage> {
             children: [
               const SizedBox(height: 24),
               Text(
-                'اختر طريقة للبحث عن الآية',
+                'اختر طريقة للبحث',
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.primary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'ليظهر لك القراءات العشر للآية',
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 24),
@@ -186,6 +177,23 @@ class _StartUpPageState extends State<StartUpPage> {
                   icon: Icons.power_settings_new,
                   label: 'خروج',
                   onTap: _exitApp,
+                ),
+              ),
+              const SizedBox(height: 32),
+              TextButton(
+                onPressed: () async {
+                  final Uri url = Uri.parse(
+                      'https://www.termsfeed.com/live/2cd9718d-11e2-46c1-a031-f5e633baa924'); // TODO: Replace with your actual privacy policy URL
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
+                },
+                child: const Text(
+                  'سياسة الخصوصية (Privacy Policy)',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blueGrey,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
