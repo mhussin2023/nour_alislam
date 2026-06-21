@@ -14,8 +14,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.nadanewsoft.nour_alislam"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 37
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -44,6 +44,8 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+    buildToolsVersion = "37.0.0"
+    compileSdkMinor = 0
 }
 
 kotlin {
